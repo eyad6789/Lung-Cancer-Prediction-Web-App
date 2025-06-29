@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung Cancer Risk Assessment Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f8fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-section {
+            background-color: #218838;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .result-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .high-risk {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #dc3545;
+            font-size: 1.2rem;
+        }
+        .low-risk {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+            font-size: 1.2rem;
+        }
+        .progress {
+            height: 25px;
+            margin: 20px 0;
+        }
+        .btn-back {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-back:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .btn-print {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-print:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .section-title {
+            color: #28a745;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .patient-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #495057;
+        }
+        .recommendation-box {
+            background-color: #cce5ff;
+            border: 1px solid #b8daff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .risk-factors-list {
+            margin: 20px 0;
+        }
+        .risk-factor-pill {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #e9ecef;
+            border-radius: 20px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background-color: white;
+            }
+            .result-container {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section no-print">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-lungs"></i> Lung Cancer Risk Assessment</h1>
+                    <p class="lead mb-0">Results and Recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="result-container">
+                    <h2 class="section-title">Assessment Results</h2>
+                    
+                    <div class="patient-info">
+                        <div class="row">
+                            <div class="col-6">
+                                <p><span class="info-label">Gender:</span> {{ gender }}</p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="info-label">Age:</span> {{ age }}</p>
+                            </div>
+                            <div class="col-12">
+                                <p><span class="info-label">Risk Factors Present:</span> {{ risk_factors_present }} out of {{ total_risk_factors }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result {{ risk_class }}">
+                        {{ result }}
+                    </div>
+                    
+                    <h5>Risk Probability</h5>
+                    <div class="progress">
+                        <div class="progress-bar {% if risk_class == 'high-risk' %}bg-danger{% else %}bg-success{% endif %}" 
+                             role="progressbar" 
+                             style="width: {{ probability }}%" 
+                             aria-valuenow="{{ probability }}" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">{{ probability }}%</div>
+                    </div>
+                    
+                    <div class="risk-factors-list">
+                        <h5>Primary Risk Factors</h5>
+                        {% if primary_factors|length > 0 and primary_factors[0] != "None identified" %}
+                            {% for factor in primary_factors %}
+                                <span class="risk-factor-pill">{{ factor }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p>No significant risk factors identified.</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="recommendation-box">
+                        <h5><i class="fas fa-stethoscope me-2"></i>Medical Recommendation</h5>
+                        <p>{{ recommendation }}</p>
+                    </div>
+                    
+                    <div class="disclaimer mt-4">
+                        <strong>Important Disclaimer:</strong> This assessment is based on a machine learning model and is intended for educational purposes only. The results should not be considered as a medical diagnosis. Please consult with a qualified healthcare professional for proper evaluation and advice.
+                    </div>
+                    
+                    <div class="text-center mt-4 no-print">
+                        <a href="/" class="btn btn-back btn-lg me-2">
+                            <i class="fas fa-arrow-left me-2"></i>New Assessment
+                        </a>
+                        <button onclick="window.print();" class="btn btn-print btn-lg">
+                            <i class="fas fa-print me-2"></i>Print Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer no-print">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Lung Cancer Risk Assessment Tool &copy; 2025</p>
+                    <p class="mb-0"><small>Created for educational and research purposes</small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
