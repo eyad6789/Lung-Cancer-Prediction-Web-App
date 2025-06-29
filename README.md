@@ -36,3 +36,13 @@ The prediction model is a Random Forest Classifier trained on relevant lung canc
 
 ## License
 This project is for educational and demonstration purposes only. Not intended for clinical diagnosis.
+
+##  © All Rights Reserved
+Official Website of EyadQasim
+
+
+## Social Media
+- [Linked In](https://www.linkedin.com/in/eyad-qasim-2a96b624b/)
+- [Github](https://github.com/eyad6789)
+
+
