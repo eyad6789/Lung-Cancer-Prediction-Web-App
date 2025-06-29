@@ -9,7 +9,7 @@ A simple yet intelligent Flask-based web application for predicting the risk of 
 - ✅ User-friendly Web Interface
 - ✅ RESTful API for Integration
 
-##🛠️ Technologies Used
+## 🛠️ Technologies Used
 - Python
 - Flask
 - HTML / CSS
@@ -27,17 +27,17 @@ A simple yet intelligent Flask-based web application for predicting the risk of 
 | `/health`      | GET    | Health check for monitoring          |
 | `/api/predict` | POST   | API for programmatic predictions     |
 
-##  About the Model
+## 🧠 About the Model
 The prediction model is a Random Forest Classifier trained on relevant lung cancer data, achieving 98.96% accuracy. It considers factors like:
 - Smoking habits
 - Anxiety levels
 - Presence of chronic disease
 - Coughing, wheezing, chest pain, etc.
 
-## License
+## 📄  License
 This project is for educational and demonstration purposes only. Not intended for clinical diagnosis.
 
-##  © All Rights Reserved
+## © All Rights Reserved
 Official Website of EyadQasim
 
 
