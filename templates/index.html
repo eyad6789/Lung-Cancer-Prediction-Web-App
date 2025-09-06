@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung Cancer Risk Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f8fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header-section {
+            background-color: #218838;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .btn-primary {
+            background-color: #28a745;
+            border-color: #28a745;
+            padding: 10px 30px;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .form-check {
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        .form-check:hover {
+            background-color: #e9ecef;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+        .disclaimer {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .section-title {
+            color: #28a745;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-lungs"></i> Lung Cancer Risk Assessment</h1>
+                    <p class="lead mb-0">A machine learning tool to evaluate potential lung cancer risk factors</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+                {% endif %}
+                
+                <div class="form-container">
+                    <h2 class="section-title">Patient Information Form</h2>
+                    <form action="/predict" method="POST">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">Gender:</label>
+                                <select id="gender" name="gender" class="form-select" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="0">Male</option>
+                                    <option value="1">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="age" class="form-label">Age:</label>
+                                <input type="number" id="age" name="age" min="1" max="120" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3">Symptoms & Risk Factors</h4>
+                        <div class="checkbox-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="smoking" id="smoking" value="1">
+                                <label class="form-check-label" for="smoking">Smoking</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="yellow_fingers" id="yellow_fingers" value="1">
+                                <label class="form-check-label" for="yellow_fingers">Yellow Fingers</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="anxiety" id="anxiety" value="1">
+                                <label class="form-check-label" for="anxiety">Anxiety</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="peer_pressure" id="peer_pressure" value="1">
+                                <label class="form-check-label" for="peer_pressure">Peer Pressure</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="chronic_disease" id="chronic_disease" value="1">
+                                <label class="form-check-label" for="chronic_disease">Chronic Disease</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="fatigue" id="fatigue" value="1">
+                                <label class="form-check-label" for="fatigue">Fatigue</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="allergy" id="allergy" value="1">
+                                <label class="form-check-label" for="allergy">Allergy</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="wheezing" id="wheezing" value="1">
+                                <label class="form-check-label" for="wheezing">Wheezing</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="alcohol_consuming" id="alcohol_consuming" value="1">
+                                <label class="form-check-label" for="alcohol_consuming">Alcohol Consuming</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="coughing" id="coughing" value="1">
+                                <label class="form-check-label" for="coughing">Coughing</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="shortness_of_breath" id="shortness_of_breath" value="1">
+                                <label class="form-check-label" for="shortness_of_breath">Shortness of Breath</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="swallowing_difficulty" id="swallowing_difficulty" value="1">
+                                <label class="form-check-label" for="swallowing_difficulty">Swallowing Difficulty</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="chest_pain" id="chest_pain" value="1">
+                                <label class="form-check-label" for="chest_pain">Chest Pain</label>
+                            </div>
+                        </div>
+
+                        <div class="disclaimer mt-4">
+                            <strong>Important:</strong> This tool is for educational purposes only and not a substitute for professional medical advice. Please consult a healthcare professional for proper diagnosis.
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-calculator me-2"></i>Calculate Risk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>Lung Cancer Risk Assessment Tool &copy; 2025</p>
+                    <p class="mb-0"><small>Created for educational and research purposes</small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
